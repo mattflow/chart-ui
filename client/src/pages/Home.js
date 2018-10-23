@@ -6,9 +6,12 @@ import {
 
 export default function Home() {
   return (
-    <Grid container>
+    <Grid container spacing={0}>
       <Grid item xs={12}>
-        <Typography variant="h5" gutterBottom>Welcome to Chart UI!</Typography>
+        <Typography variant="h5" gutterBottom>
+          Welcome to Chart UI!
+          <hr />
+        </Typography>
         <Typography variant="body1" gutterBottom>
           Chart UI is a free and easy to use interface for creating great looking charts.
           Charting programs can be difficult to use and often cost money. This tool helps
