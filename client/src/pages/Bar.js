@@ -114,6 +114,7 @@ class Bar extends Component {
     const element = document.createElement('a');
     element.setAttribute('href', this.chart.toBase64Image());
     element.setAttribute('download', 'barchart.png');
+    element.setAttribute('target', '_blank');
   
     element.style.display = 'none';
     document.body.appendChild(element);
