@@ -8,11 +8,11 @@ export default function Line() {
   return (
     <Grid container spacing={16}>
         <Grid item xs={12}>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h5">
             Line Graph
             <hr />
           </Typography>
-          <Typography variant="h5">Coming soon!</Typography>
+          <Typography variant="body1">Coming soon!</Typography>
         </Grid>
     </Grid>
   );
