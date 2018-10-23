@@ -1,0 +1,14 @@
+{
+  "name": "chart-ui",
+  "version": "1.0.0",
+  "description": "An free and simple to use interface for making good-looking charts and graphs.",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "postinstall": "cd client && yarn install",
+    "dev": "cd client && yarn start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
