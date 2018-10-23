@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "postinstall": "cd client && yarn install",
-    "dev": "cd client && yarn start"
+    "dev": "cd client && yarn start",
+    "deploy": "cd client && yarn deploy"
   },
   "keywords": [],
   "author": "",
