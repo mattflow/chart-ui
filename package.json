@@ -10,8 +10,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "prop-types": "^15.6.2"
-  }
+  "license": "ISC"
 }
