@@ -3,7 +3,6 @@ import Chart from 'chart.js';
 import { withStyles } from '@material-ui/core/styles';
 import update from 'immutability-helper';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import shortid from 'shortid';
 import {
   Grid,
   Typography,
@@ -153,7 +152,7 @@ class Bar extends Component {
           </div>
           <div className={classes.bottomMargin}>
             {this.state.datasets.map((dataset, index) => 
-              <ExpansionPanel key={shortid.generate()}>
+              <ExpansionPanel key={index}>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                   <TextField
                     type="text"
