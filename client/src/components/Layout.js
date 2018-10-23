@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { blue, pink } from '@material-ui/core/colors';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import {
   Drawer,
   SwipeableDrawer,
@@ -20,6 +21,9 @@ import {
 } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import MenuIcon from '@material-ui/icons/Menu';
+import BarChartIcon from '@material-ui/icons/BarChart';
+import PieChartIcon from '@material-ui/icons/PieChart';
+import ShowChartIcon from '@material-ui/icons/ShowChart';
 
 const colorTheme = createMuiTheme({
   palette: {
@@ -76,6 +80,17 @@ class Layout extends Component {
     this.setState(state => ({ navOpen: !state.navOpen }));
   }
 
+  handleNavClick = (route) => {
+    return () => {
+      setTimeout(() => {
+        this.props.history.push(route);
+        this.setState({
+          navOpen: false,
+        });
+      }, 150);
+    };
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -84,11 +99,29 @@ class Layout extends Component {
         <div className={classes.toolbar} />
         <Divider />
         <List>
-          <ListItem button key="Home">
+          <ListItem button key="Home" onClick={this.handleNavClick('/')}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary="Home" />
+          </ListItem>
+          <ListItem button key="Bar" onClick={this.handleNavClick('/bar')}>
+            <ListItemIcon>
+              <BarChartIcon />
+            </ListItemIcon>
+            <ListItemText primary="Bar" />
+          </ListItem>
+          <ListItem button key="Line" onClick={this.handleNavClick('/line')}>
+            <ListItemIcon>
+              <ShowChartIcon />
+            </ListItemIcon>
+            <ListItemText primary="Line" />
+          </ListItem>
+          <ListItem button key="Pie" onClick={this.handleNavClick('/pie')}>
+            <ListItemIcon>
+              <PieChartIcon />
+            </ListItemIcon>
+            <ListItemText primary="Pie" />
           </ListItem>
         </List>
       </div>
@@ -160,4 +193,4 @@ Layout.propTypes = {
   children: PropTypes.array,
 };
 
-export default withStyles(styles, { withTheme: true })(Layout);
+export default withRouter(withStyles(styles, { withTheme: true })(Layout));
