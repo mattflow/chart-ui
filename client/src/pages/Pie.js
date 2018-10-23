@@ -6,10 +6,14 @@ import {
 
 export default function Pie() {
   return (
-    <Grid container>
-      <Grid item xs={12}>
-        <Typography variant="h5" gutterBottom>Coming soon!</Typography>
-      </Grid>
+    <Grid container spacing={16}>
+        <Grid item xs={12}>
+          <Typography variant="h4" gutterBottom>
+            Pie Chart
+            <hr />
+          </Typography>
+          <Typography variant="h5">Coming soon!</Typography>
+        </Grid>
     </Grid>
   );
 };

@@ -6,10 +6,14 @@ import {
 
 export default function Line() {
   return (
-    <Grid container>
-      <Grid item xs={12}>
-        <Typography variant="h5" gutterBottom>Coming soon!</Typography>
-      </Grid>
+    <Grid container spacing={16}>
+        <Grid item xs={12}>
+          <Typography variant="h4" gutterBottom>
+            Line Graph
+            <hr />
+          </Typography>
+          <Typography variant="h5">Coming soon!</Typography>
+        </Grid>
     </Grid>
   );
 };
