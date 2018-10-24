@@ -41,7 +41,7 @@ const styles = theme => ({
     display: 'flex',
   },
   drawer: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       width: drawerWidth,
       flexShrink: 0,
     },
@@ -51,13 +51,13 @@ const styles = theme => ({
   },
   appBar: {
     marginLeft: drawerWidth,
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       width: `calc(100% - ${drawerWidth}px)`,
     },
   },
   menuButton: {
     marginRight: theme.spacing.unit * 2,
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       display: 'none',
     },
   },
@@ -147,7 +147,7 @@ class Layout extends Component {
             </Toolbar>
           </AppBar>
           <nav className={classes.drawer}>
-            <Hidden smUp implementation="css">
+            <Hidden mdUp implementation="css">
               <SwipeableDrawer
                 disableBackdropTransition={!iOS}
                 disableDiscovery={iOS}
@@ -165,7 +165,7 @@ class Layout extends Component {
                 {drawerContent}
               </SwipeableDrawer>
             </Hidden>
-            <Hidden xsDown implementation="css">
+            <Hidden smDown implementation="css">
               <Drawer
                 variant="permanent"
                 open

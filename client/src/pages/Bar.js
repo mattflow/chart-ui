@@ -134,7 +134,7 @@ class Bar extends Component {
             <hr />
           </Typography>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={6} lg={4}>
           <div className={classes.bottomMargin}>
             <Button
               color="primary"
@@ -179,7 +179,7 @@ class Bar extends Component {
             )}
           </div>
         </Grid>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={6} lg={8}>
           <canvas id="chart"></canvas>
           <Toolbar>
             <Button
