@@ -8,7 +8,7 @@ export default function Line() {
   return (
     <Grid container spacing={16}>
         <Grid item xs={12}>
-          <Typography variant="h5">
+          <Typography variant="h5" gutterBottom>
             Line Graph
             <hr />
           </Typography>
