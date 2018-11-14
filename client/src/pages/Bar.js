@@ -13,6 +13,7 @@ import {
   TextField,
   Toolbar,
 } from '@material-ui/core';
+import AddDataDialog from '../components/AddDataDialog';
 
 const styles = theme => ({
   button: {
@@ -53,6 +54,7 @@ class Bar extends Component {
     this.state = {
       labels: [],
       datasets: [],
+      addDataDialogOpen: false,
     };
     this.chart = undefined;
   }
@@ -73,6 +75,12 @@ class Bar extends Component {
           }],
         },
       },
+    });
+  }
+
+  handleAddDataClick = () => {
+    this.setState({
+      addDataDialogOpen: true,
     });
   }
 
@@ -124,6 +132,12 @@ class Bar extends Component {
     document.body.removeChild(element);
   }
 
+  handleAddDataDialogClose = () => {
+    this.setState({
+      addDataDialogOpen: false,
+    });
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -134,6 +148,10 @@ class Bar extends Component {
             <hr />
           </Typography>
         </Grid>
+        <AddDataDialog 
+          open={this.state.addDataDialogOpen} 
+          handleClose={this.handleAddDataDialogClose}
+        />
         <Grid item xs={12} md={6} lg={4}>
           <div className={classes.bottomMargin}>
             <Button
@@ -166,6 +184,7 @@ class Bar extends Component {
                   <Button
                     color="primary"
                     className={classes.button}
+                    onClick={this.handleAddDataClick}
                   >
                     Add Data
                   </Button>
