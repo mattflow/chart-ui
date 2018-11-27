@@ -3,15 +3,23 @@ import Chart from 'chart.js';
 import { withStyles } from '@material-ui/core/styles';
 import update from 'immutability-helper';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import DeleteIcon from '@material-ui/icons/Delete';
 import {
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
   Grid,
   Typography,
   Button,
   ExpansionPanel,
   ExpansionPanelSummary,
   ExpansionPanelDetails,
+  Paper,
   TextField,
   Toolbar,
+  IconButton,
 } from '@material-ui/core';
 import AddDataDialog from '../components/AddDataDialog';
 
@@ -21,6 +29,14 @@ const styles = theme => ({
   },
   bottomMargin: {
     marginBottom: theme.spacing.unit * 2,
+  },
+  paper: {
+    padding: theme.spacing.unit * 2,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+  },
+  tablePaper: {
+    padding: 0,
   },
 });
 
@@ -38,7 +54,7 @@ class Dataset {
     this.data = [];
     this.backgroundColor = [];
     this.borderColor = [];
-    this.borderWidth = 1;
+    //this.borderWidth = 1;
   }
 
   addData(data) {
@@ -52,8 +68,11 @@ class Bar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      label: '',
       labels: [],
-      datasets: [],
+      data: [],
+      backgroundColor: [],
+      borderColor: [],
       addDataDialogOpen: false,
     };
     this.chart = undefined;
@@ -64,7 +83,13 @@ class Bar extends Component {
       type: 'bar',
       data: {
         labels: [],
-        datasets: [],
+        datasets: [{
+          label: '',
+          data: [],
+          backgroundColor: [],
+          borderColor: [],
+          borderWidth: 1,
+        }],
       },
       options: {
         scales: {
@@ -98,11 +123,20 @@ class Bar extends Component {
 
   handleChartClearClick = () => {
     this.setState({
+      label: '',
       labels: [],
-      datasets: [],
+      data: [],
+      backgroundColor: [],
+      borderColor: [],
     });
-    this.chart.labels = [];
-    this.chart.data.datasets = [];
+    this.chart.data.labels = [];
+    this.chart.data.datasets = [{
+      label: '',
+      data: [],
+      backgroundColor: [],
+      borderColor: [],
+      borderWidth: 1,
+    }];
     this.chart.update();
   }
 
@@ -138,6 +172,35 @@ class Bar extends Component {
     });
   }
 
+  handleLabelChange = (e) => {
+    this.setState({
+      label: e.target.value,
+    });
+
+    this.chart.data.datasets[0].label = e.target.value;
+    this.chart.update();
+  }
+
+  handleDataAdd = (label, data, backgroundColor, borderColor) => {
+    const newState = update(this.state, {
+      labels: {$push: [label]},
+      data: {$push: [data]},
+      backgroundColor: {$push: [backgroundColor]},
+      borderColor: {$push: [borderColor]},
+    });
+
+    this.chart.data.labels.push(label);
+    this.chart.data.datasets.forEach(dataset => {
+      dataset.data.push(data);
+      dataset.backgroundColor.push(backgroundColor);
+      dataset.borderColor.push(borderColor);
+    });
+
+    this.chart.update();
+
+    this.setState(newState);
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -151,15 +214,16 @@ class Bar extends Component {
         <AddDataDialog 
           open={this.state.addDataDialogOpen} 
           handleClose={this.handleAddDataDialogClose}
+          handleAdd={this.handleDataAdd}
         />
         <Grid item xs={12} md={6} lg={4}>
           <div className={classes.bottomMargin}>
             <Button
               color="primary"
               className={classes.button}
-              onClick={this.handleNewDatasetClick}
+              onClick={this.handleAddDataClick}
             >
-              Add Dataset
+              Add Data
             </Button>
             <Button
               color="secondary"
@@ -170,7 +234,48 @@ class Bar extends Component {
             </Button>
           </div>
           <div className={classes.bottomMargin}>
-            {this.state.datasets.map((dataset, index) => 
+            <Paper className={classes.paper} elevation={1}>
+              <TextField
+                type="text"
+                value={this.state.label}
+                onChange={this.handleLabelChange}
+                label="Dataset Name"
+                fullWidth
+                gutterBottom
+              />
+            </Paper>
+            <ExpansionPanel>
+              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography variant="h6">
+                  Data
+                </Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails className={classes.tablePaper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Label</TableCell>
+                      <TableCell>Value</TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {this.state.labels.map((label, index) => (
+                      <TableRow style={{ backgroundColor: this.state.backgroundColor[index] }}>
+                        <TableCell>{label}</TableCell>
+                        <TableCell>{this.state.data[index]}</TableCell>
+                        <TableCell>
+                          <IconButton aria-label="Delete">
+                            <DeleteIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+            {/*this.state.datasets.map((dataset, index) => 
               <ExpansionPanel key={index}>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                   <TextField
@@ -195,7 +300,7 @@ class Bar extends Component {
                   </Button>
                 </ExpansionPanelDetails>
               </ExpansionPanel>
-            )}
+            )*/}
           </div>
         </Grid>
         <Grid item xs={12} md={6} lg={8}>
