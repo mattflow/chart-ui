@@ -74,6 +74,8 @@ class Bar extends Component {
       backgroundColor: [],
       borderColor: [],
       addDataDialogOpen: false,
+      xlabel: '',
+      ylabel: '',
     };
     this.chart = undefined;
   }
@@ -96,6 +98,16 @@ class Bar extends Component {
           yAxes: [{
             ticks: {
               beginAtZero: true,
+            },
+            scaleLabel: {
+              display: true,
+              labelString: '',
+            },
+          }],
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: '',
             },
           }],
         },
@@ -181,6 +193,24 @@ class Bar extends Component {
     this.chart.update();
   }
 
+  handleXLabelChange = (e) => {
+    this.setState({
+      xlabel: e.target.value,
+    });
+
+    this.chart.options.scales.xAxes[0].scaleLabel.labelString = e.target.value;
+    this.chart.update();
+  }
+
+  handleYLabelChange = (e) => {
+    this.setState({
+      ylabel: e.target.value,
+    });
+
+    this.chart.options.scales.yAxes[0].scaleLabel.labelString = e.target.value;
+    this.chart.update();
+  }
+
   handleDataAdd = (label, data, backgroundColor, borderColor) => {
     const newState = update(this.state, {
       labels: {$push: [label]},
@@ -199,6 +229,25 @@ class Bar extends Component {
     this.chart.update();
 
     this.setState(newState);
+  }
+
+  handleDataDelete = (index) => {
+    return () => {
+      const newState = update(this.state, {
+        data: {$splice: [[index, 1]]},
+        labels: {$splice: [[index, 1]]},
+        backgroundColor: {$splice: [[index, 1]]},
+        borderColor: {$splice: [[index, 1]]},
+      });
+      this.setState(newState);
+      this.chart.data.labels.splice(index, 1);
+      this.chart.data.datasets.forEach(dataset => {
+        dataset.data.splice(index, 1);
+        dataset.backgroundColor.splice(index, 1);
+        dataset.borderColor.splice(index, 1);
+      });
+      this.chart.update();
+    }
   }
 
   render() {
@@ -243,6 +292,22 @@ class Bar extends Component {
                 fullWidth
                 gutterBottom
               />
+              <TextField
+                type="text"
+                value={this.state.xlabel}
+                onChange={this.handleXLabelChange}
+                label="X Axis Label"
+                fullWidth
+                gutterBottom
+              />
+              <TextField
+                type="text"
+                value={this.state.ylabel}
+                onChange={this.handleYLabelChange}
+                label="Y Axis Label"
+                fullWidth
+                gutterBottom
+              />
             </Paper>
             <ExpansionPanel>
               <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
@@ -265,7 +330,7 @@ class Bar extends Component {
                         <TableCell>{label}</TableCell>
                         <TableCell>{this.state.data[index]}</TableCell>
                         <TableCell>
-                          <IconButton aria-label="Delete">
+                          <IconButton onClick={this.handleDataDelete(index)} aria-label="Delete">
                             <DeleteIcon />
                           </IconButton>
                         </TableCell>
@@ -275,32 +340,6 @@ class Bar extends Component {
                 </Table>
               </ExpansionPanelDetails>
             </ExpansionPanel>
-            {/*this.state.datasets.map((dataset, index) => 
-              <ExpansionPanel key={index}>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                  <TextField
-                    type="text"
-                    value={dataset.label}
-                    fullWidth
-                    onChange={this.handleDatasetLabelChange(index)}
-                  />
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                  <Button
-                    color="primary"
-                    className={classes.button}
-                    onClick={this.handleAddDataClick}
-                  >
-                    Add Data
-                  </Button>
-                  <Button
-                    color="secondary"
-                  >
-                    Remove Dataset
-                  </Button>
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
-            )*/}
           </div>
         </Grid>
         <Grid item xs={12} md={6} lg={8}>
