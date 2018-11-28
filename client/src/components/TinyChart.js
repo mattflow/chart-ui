@@ -6,9 +6,9 @@ const styles = theme => ({
 });
 
 export class TinyChart extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+  //constructor(props) {
+    //super(props);
+  //}
 
   componentDidMount() {
     const ctx = document.getElementById(`chart-${this.props.index}`);
@@ -51,7 +51,7 @@ export class TinyChart extends React.Component {
   }
 
   render() {
-    const { classes } = this.props
+    //const { classes } = this.props
     return (
       <canvas
         id={`chart-${this.props.index}`}

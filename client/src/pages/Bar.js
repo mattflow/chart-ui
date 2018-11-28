@@ -90,8 +90,7 @@ class Bar extends Component {
         },
       },
     });
-    const dataTable = document.getElementById('dataTable');
-    const sortableDataTable = Sortable.create(dataTable);
+    Sortable.create(document.getElementById('dataTable'));
   }
 
   handleAddDataClick = () => {
@@ -261,7 +260,6 @@ class Bar extends Component {
                 onChange={this.handleLabelChange}
                 label="Dataset Name"
                 fullWidth
-                gutterBottom
                 className={classes.bottomMargin}
               />
               <TextField
@@ -270,7 +268,6 @@ class Bar extends Component {
                 onChange={this.handleXLabelChange}
                 label="X Axis Label"
                 fullWidth
-                gutterBottom
                 className={classes.bottomMargin}
               />
               <TextField
@@ -279,7 +276,6 @@ class Bar extends Component {
                 onChange={this.handleYLabelChange}
                 label="Y Axis Label"
                 fullWidth
-                gutterBottom
                 className={classes.bottomMargin}
               />
             </Paper>
