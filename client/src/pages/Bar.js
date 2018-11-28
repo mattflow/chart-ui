@@ -40,30 +40,6 @@ const styles = theme => ({
   },
 });
 
-class Data {
-  constructor(value, backgroundColor, borderColor) {
-    this.value = value;
-    this.backgroundColor = backgroundColor;
-    this.borderColor = borderColor;
-  }
-}
-
-class Dataset {
-  constructor(label) {
-    this.label = label;
-    this.data = [];
-    this.backgroundColor = [];
-    this.borderColor = [];
-    //this.borderWidth = 1;
-  }
-
-  addData(data) {
-    this.data.push(data.value);
-    this.backgroundColor.push(data.backgroundColor);
-    this.borderColor.push(data.borderColor);
-  }
-}
-
 class Bar extends Component {
   constructor(props) {
     super(props);
@@ -121,21 +97,11 @@ class Bar extends Component {
     });
   }
 
-  handleNewDatasetClick = () => {
-    const dataset = new Dataset(`Dataset ${this.state.datasets.length + 1}`);
-    const newState = update(this.state, {
-      datasets: {$push: [dataset]},
-    });
-
-    this.setState(newState);
-
-    this.chart.data.datasets.push(dataset);
-    this.chart.update();
-  }
-
   handleChartClearClick = () => {
     this.setState({
       label: '',
+      ylabel: '',
+      xlabel: '',
       labels: [],
       data: [],
       backgroundColor: [],
@@ -149,6 +115,8 @@ class Bar extends Component {
       borderColor: [],
       borderWidth: 1,
     }];
+    this.chart.options.scales.xAxes[0].scaleLabel.labelString = '';
+    this.chart.options.scales.yAxes[0].scaleLabel.labelString = '';
     this.chart.update();
   }
 
@@ -291,6 +259,7 @@ class Bar extends Component {
                 label="Dataset Name"
                 fullWidth
                 gutterBottom
+                className={classes.bottomMargin}
               />
               <TextField
                 type="text"
@@ -299,6 +268,7 @@ class Bar extends Component {
                 label="X Axis Label"
                 fullWidth
                 gutterBottom
+                className={classes.bottomMargin}
               />
               <TextField
                 type="text"
@@ -307,6 +277,7 @@ class Bar extends Component {
                 label="Y Axis Label"
                 fullWidth
                 gutterBottom
+                className={classes.bottomMargin}
               />
             </Paper>
             <ExpansionPanel>
