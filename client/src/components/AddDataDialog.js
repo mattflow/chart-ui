@@ -110,6 +110,7 @@ class AddDataDialog extends React.Component {
             className={classes.bottomMargin}
             color={this.state.color} 
             onChange={this.handleColorChange}
+            width="100%"
           />
           <DialogActions>
             <Button color="secondary" onClick={this.props.handleClose}>
