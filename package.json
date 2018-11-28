@@ -7,8 +7,7 @@
   "scripts": {
     "postinstall": "cd client && yarn install && yarn build",
     "dev": "concurrently \"nodemon --ignore client server\" \"cd client && yarn start\"",
-    "deploy": "cd client && yarn deploy",
-    "build": "cd client && yarn build",
+    "deploy": "git push heroku master",
     "start": "node server"
   },
   "keywords": [],
