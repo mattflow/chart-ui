@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Bar from './pages/Bar';
 import Line from './pages/Line';
 import Pie from './pages/Pie';
+import Showcase from './pages/Showcase';
 
 class App extends Component {
   render() {
@@ -15,6 +16,7 @@ class App extends Component {
           <Route path="/bar" component={Bar} />
           <Route path="/line" component={Line} />
           <Route path="/pie" component={Pie} />
+          <Route path="/showcase" component={Showcase} />
         </Layout>
       </Router>
     );

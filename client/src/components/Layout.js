@@ -24,6 +24,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import PieChartIcon from '@material-ui/icons/PieChart';
 import ShowChartIcon from '@material-ui/icons/ShowChart';
+import StarsIcon from '@material-ui/icons/Stars';
 
 const colorTheme = createMuiTheme({
   palette: {
@@ -122,6 +123,12 @@ class Layout extends Component {
               <PieChartIcon />
             </ListItemIcon>
             <ListItemText primary="Pie" />
+          </ListItem>
+          <ListItem button key="Showcase" onClick={this.handleNavClick('/showcase')}>
+            <ListItemIcon>
+              <StarsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Showcase" />
           </ListItem>
         </List>
       </div>
