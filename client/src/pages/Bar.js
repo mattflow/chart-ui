@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import update from 'immutability-helper';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Sortable from 'sortablejs';
 import {
   Table,
   TableHead,
@@ -89,6 +90,8 @@ class Bar extends Component {
         },
       },
     });
+    const dataTable = document.getElementById('dataTable');
+    const sortableDataTable = Sortable.create(dataTable);
   }
 
   handleAddDataClick = () => {
@@ -295,7 +298,7 @@ class Bar extends Component {
                       <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
-                  <TableBody>
+                  <TableBody id="dataTable">
                     {this.state.labels.map((label, index) => (
                       <TableRow style={{ backgroundColor: this.state.backgroundColor[index] }}>
                         <TableCell>{label}</TableCell>
