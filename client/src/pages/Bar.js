@@ -91,6 +91,30 @@ class Bar extends Component {
       },
     });
     Sortable.create(document.getElementById('dataTable'));
+    const data = JSON.parse(localStorage.getItem('data'));
+    if (localStorage && data) {
+      this.setState({
+        label: data.label,
+        labels: data.labels,
+        data: data.data,
+        backgroundColor: data.backgroundColor,
+        borderColor: data.borderColor,
+        xlabel: data.xlabel,
+        ylabel: data.ylabel,
+      });
+
+      this.chart.data.labels = data.labels;
+      this.chart.data.datasets.forEach(dataset => {
+        dataset.label = data.label;
+        dataset.data = data.data;
+        dataset.backgroundColor = data.backgroundColor;
+        dataset.borderColor = data.borderColor;
+      });
+
+      this.chart.options.scales.xAxes[0].scaleLabel.labelString = data.xlabel;
+      this.chart.options.scales.yAxes[0].scaleLabel.labelString = data.ylabel;
+      this.chart.update();
+    }
   }
 
   handleAddDataClick = () => {
@@ -120,6 +144,9 @@ class Bar extends Component {
     this.chart.options.scales.xAxes[0].scaleLabel.labelString = '';
     this.chart.options.scales.yAxes[0].scaleLabel.labelString = '';
     this.chart.update();
+    if (localStorage) {
+      localStorage.removeItem('data');
+    }
   }
 
   handleDatasetLabelChange = (index) => {
@@ -161,6 +188,12 @@ class Bar extends Component {
 
     this.chart.data.datasets[0].label = e.target.value;
     this.chart.update();
+  }
+
+  componentDidUpdate() {
+    if (localStorage) {
+      localStorage.setItem('data', JSON.stringify(this.state));
+    }
   }
 
   handleXLabelChange = (e) => {
@@ -299,7 +332,7 @@ class Bar extends Component {
                   </TableHead>
                   <TableBody id="dataTable">
                     {this.state.labels.map((label, index) => (
-                      <TableRow style={{ backgroundColor: this.state.backgroundColor[index] }}>
+                      <TableRow key={index} style={{ backgroundColor: this.state.backgroundColor[index] }}>
                         <TableCell>{label}</TableCell>
                         <TableCell>{this.state.data[index]}</TableCell>
                         <TableCell>
