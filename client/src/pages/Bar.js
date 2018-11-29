@@ -254,6 +254,9 @@ class Bar extends Component {
           </div>
           <div className={classes.bottomMargin}>
             <Paper className={classes.paper} elevation={1}>
+              <Typography className={classes.bottomMargin} variant="h6">
+                Configuration
+              </Typography>
               <TextField
                 type="text"
                 value={this.state.label}
