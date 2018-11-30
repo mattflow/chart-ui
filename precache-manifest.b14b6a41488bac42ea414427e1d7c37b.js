@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "3bc3efccc86d1525eabb",
+    "revision": "e711d34dc0af7aae0888",
     "url": "/chart-ui/static/css/main.25f2ad90.chunk.css"
   },
   {
-    "revision": "3bc3efccc86d1525eabb",
-    "url": "/chart-ui/static/js/main.3bc3efcc.chunk.js"
+    "revision": "e711d34dc0af7aae0888",
+    "url": "/chart-ui/static/js/main.e711d34d.chunk.js"
   },
   {
     "revision": "f78ec632de7cd6772127",
@@ -16,7 +16,7 @@ self.__precacheManifest = [
     "url": "/chart-ui/static/js/runtime~main.14717688.js"
   },
   {
-    "revision": "cae5071ea1efe8100c59d11d11d3b9cc",
+    "revision": "4b4e6bb18acf289ca388495f857cae68",
     "url": "/chart-ui/index.html"
   }
 ];
