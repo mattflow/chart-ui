@@ -5,6 +5,9 @@ import update from 'immutability-helper';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Sortable from 'sortablejs';
+import CreateIcon from '@material-ui/icons/Create';
+import HelpIcon from '@material-ui/icons/Help';
+import ConfirmAlert from '../components/ConfirmAlert';
 import {
   Table,
   TableHead,
@@ -39,6 +42,15 @@ const styles = theme => ({
   tablePaper: {
     padding: 0,
   },
+  tableIcon: {
+    fontSize: '1.2rem',
+  },
+  helpButton: {
+    position: 'fixed',
+    right: theme.spacing.unit * 2,
+    bottom: theme.spacing.unit * 2,
+    zIndex: 999999999,
+  },
 });
 
 class Bar extends Component {
@@ -53,6 +65,8 @@ class Bar extends Component {
       addDataDialogOpen: false,
       xlabel: '',
       ylabel: '',
+      showConfirm: false,
+      editData: undefined,
     };
     this.chart = undefined;
   }
@@ -234,6 +248,26 @@ class Bar extends Component {
     this.setState(newState);
   }
 
+  handleDataEdit = (label, data, backgroundColor, borderColor) => {
+    const index = this.state.editData.index;
+    const newState = update(this.state, {
+      labels: {[index]: {$set: label}},
+      data: {[index]: {$set: data}},
+      backgroundColor: {[index]: {$set: backgroundColor}},
+      borderColor: {[index]: {$set: borderColor}},
+    });
+
+    this.chart.data.labels[index] = label;
+    this.chart.data.datasets.forEach(dataset => {
+      dataset.data[index] = data;
+      dataset.backgroundColor[index] = backgroundColor;
+      dataset.borderColor[index] = borderColor;
+    });
+
+    this.chart.update();
+    this.setState(newState);
+  }
+
   handleDataDelete = (index) => {
     return () => {
       const newState = update(this.state, {
@@ -253,6 +287,31 @@ class Bar extends Component {
     }
   }
 
+  handleDataEditClick = (index) => {
+    return () => {
+      const rgb = this.chart.data.datasets[0].borderColor[index].replace(/[^\d,.]/g, '').split(',')
+      const editData = {
+        index,
+        label: this.chart.data.labels[index],
+        value: this.chart.data.datasets[0].data[index],
+        color: {
+          r: rgb[0],
+          g: rgb[1],
+          b: rgb[2],
+        },
+      };
+      this.setState({
+        editData,
+      });
+    };
+  }
+
+  handleEditDataDialogClose = () => {
+    this.setState({
+      editData: undefined,
+    });
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -263,11 +322,24 @@ class Bar extends Component {
             <hr />
           </Typography>
         </Grid>
+        <ConfirmAlert 
+          open={this.state.showConfirm}
+          onYesClick={() => {}}
+          onNoClick={() => { this.setState({ showConfirm: false }); }}
+        />
         <AddDataDialog 
           open={this.state.addDataDialogOpen} 
           handleClose={this.handleAddDataDialogClose}
           handleAdd={this.handleDataAdd}
         />
+        {this.state.editData && <AddDataDialog
+          open={true}
+          handleClose={this.handleEditDataDialogClose}
+          handleAdd={this.handleDataEdit}
+          label={this.state.editData.label}
+          value={this.state.editData.value}
+          color={this.state.editData.color}
+        />}
         <Grid item xs={12} md={6} lg={4}>
           <div className={classes.bottomMargin}>
             <Button
@@ -294,7 +366,7 @@ class Bar extends Component {
                 type="text"
                 value={this.state.label}
                 onChange={this.handleLabelChange}
-                label="Dataset Name"
+                label="Title"
                 fullWidth
                 className={classes.bottomMargin}
               />
@@ -325,19 +397,22 @@ class Bar extends Component {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>Label</TableCell>
-                      <TableCell>Value</TableCell>
-                      <TableCell></TableCell>
+                      <TableCell padding="dense">Label</TableCell>
+                      <TableCell padding="dense">Value</TableCell>
+                      <TableCell padding="none"></TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody id="dataTable">
                     {this.state.labels.map((label, index) => (
                       <TableRow key={index} style={{ backgroundColor: this.state.backgroundColor[index] }}>
-                        <TableCell>{label}</TableCell>
-                        <TableCell>{this.state.data[index]}</TableCell>
-                        <TableCell>
+                        <TableCell padding="dense">{label}</TableCell>
+                        <TableCell padding="dense">{this.state.data[index]}</TableCell>
+                        <TableCell padding="none">
+                          <IconButton onClick={this.handleDataEditClick(index)} aria-label="Delete">
+                            <CreateIcon className={classes.tableIcon} />
+                          </IconButton>
                           <IconButton onClick={this.handleDataDelete(index)} aria-label="Delete">
-                            <DeleteIcon />
+                            <DeleteIcon className={classes.tableIcon} />
                           </IconButton>
                         </TableCell>
                       </TableRow>
@@ -359,6 +434,9 @@ class Bar extends Component {
             </Button>
           </Toolbar>
         </Grid>
+        <Button variant="fab" color="secondary" aria-label="help" className={classes.helpButton}>
+          <HelpIcon />
+        </Button>
       </Grid>
     );
   }

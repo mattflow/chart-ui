@@ -23,12 +23,12 @@ const styles = theme => ({
 });
 
 class AddDataDialog extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      label: '',
-      value: '',
-      color: {
+      label: props.label || '',
+      value: props.value || '',
+      color: props.color || {
         r: 0,
         g: 0,
         b: 0,
@@ -88,7 +88,7 @@ class AddDataDialog extends React.Component {
             label="Label"
             fullWidth
             type="text"
-            value={this.props.label}
+            value={this.state.label}
             onChange={this.handleLabelChange}
           >
           </TextField>
@@ -97,7 +97,7 @@ class AddDataDialog extends React.Component {
             label="Value"
             fullWidth
             type="number"
-            value={this.props.value}
+            value={this.state.value}
             onChange={this.handleValueChange}
           >
           </TextField>
