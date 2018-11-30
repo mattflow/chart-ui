@@ -62,7 +62,7 @@ class FullScreenDialog extends React.Component {
                   </Typography>
                   <Typography variant="body" gutterBottom>
                     The title of the chart can be set by typing the desired text into the input labeled "Title." This input
-                    is located in the "Configuration" section on the left side of the page (Top of the page on mobile).
+                    is located in the "Details" section on the left side of the page (Top of the page on mobile).
                   </Typography>
                 </div>
                 <div className={classes.helpSection}>
@@ -71,7 +71,7 @@ class FullScreenDialog extends React.Component {
                   </Typography>
                   <Typography variant="body" gutterBottom>
                     The axis labels on the chart can be set by typing the desired text into the inputs labeled "X Axis Label" or "Y Axis Label."
-                    These inputs are located in the "Configuration" section on the left side of the page (Top of the page on mobile).
+                    These inputs are located in the "Details" section on the left side of the page (Top of the page on mobile).
                   </Typography>
                 </div>
                 <div className={classes.helpSection}>

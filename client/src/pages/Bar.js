@@ -9,6 +9,7 @@ import CreateIcon from '@material-ui/icons/Create';
 import HelpIcon from '@material-ui/icons/Help';
 import ConfirmAlert from '../components/ConfirmAlert';
 import HelpDialog from '../components/HelpDialog';
+import FeedbackDialog from '../components/FeedbackDialog';
 import {
   Table,
   TableHead,
@@ -75,6 +76,7 @@ class Bar extends Component {
       showConfirm: false,
       editData: undefined,
       showHelpDialog: false,
+      showFeedbackDialog: false,
     };
     this.chart = undefined;
   }
@@ -377,6 +379,23 @@ class Bar extends Component {
     });
   }
 
+  handleFeedbackDialogClose = () => {
+    this.setState({
+      showFeedbackDialog: false,
+    });
+    this.handleChartDownload();
+  }
+
+  handleFeedbackDialogOpen = () => {
+    if (localStorage.getItem('dontAsk') !== 'true') {
+      this.setState({
+        showFeedbackDialog: true,
+      });
+    } else {
+      this.handleChartDownload();
+    }
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -387,6 +406,10 @@ class Bar extends Component {
             <hr />
           </Typography>
         </Grid>
+        <FeedbackDialog
+          open={this.state.showFeedbackDialog}
+          onClose={this.handleFeedbackDialogClose}
+         />
         <ConfirmAlert 
           open={this.state.showConfirm}
           onYesClick={() => {}}
@@ -426,7 +449,7 @@ class Bar extends Component {
           <div className={classes.bottomMargin}>
             <Paper className={classes.paper} elevation={1}>
               <Typography className={classes.bottomMargin} variant="h6">
-                Configuration
+                Details
               </Typography>
               <TextField
                 type="text"
@@ -496,7 +519,7 @@ class Bar extends Component {
           <Toolbar>
             <Button
               color="secondary"
-              onClick={this.handleChartDownload}
+              onClick={/*this.handleChartDownload*/this.handleFeedbackDialogOpen}
             >
               Download Chart
             </Button>

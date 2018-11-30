@@ -149,7 +149,7 @@ class Layout extends Component {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" color="inherit" noWrap>
-                Chart UI
+                Chart Builder
               </Typography>
             </Toolbar>
           </AppBar>

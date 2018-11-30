@@ -9,11 +9,11 @@ export default function Home() {
     <Grid container spacing={0}>
       <Grid item xs={12}>
         <Typography variant="h5" gutterBottom>
-          Welcome to Chart UI!
+          Welcome to Chart Builder!
           <hr />
         </Typography>
         <Typography variant="body1" gutterBottom>
-          Chart UI is a free and easy to use interface for creating great looking charts.
+          Chart Builder is a free and easy to use interface for creating great looking charts.
           Charting programs can be difficult to use and often cost money. This tool helps
           users of all ages create visually appealing charts and graphs for any purpose.
           It uses chart.js behind the scenes but provides the user with an easy interface
