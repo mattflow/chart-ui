@@ -8,6 +8,7 @@ import Sortable from 'sortablejs';
 import CreateIcon from '@material-ui/icons/Create';
 import HelpIcon from '@material-ui/icons/Help';
 import ConfirmAlert from '../components/ConfirmAlert';
+import HelpDialog from '../components/HelpDialog';
 import {
   Table,
   TableHead,
@@ -51,6 +52,12 @@ const styles = theme => ({
     bottom: theme.spacing.unit * 2,
     zIndex: 999999999,
   },
+  noPadding: {
+    padding: 0,
+  },
+  draggableRow: {
+    cursor: 'move',
+  },
 });
 
 class Bar extends Component {
@@ -67,6 +74,7 @@ class Bar extends Component {
       ylabel: '',
       showConfirm: false,
       editData: undefined,
+      showHelpDialog: false,
     };
     this.chart = undefined;
   }
@@ -104,7 +112,44 @@ class Bar extends Component {
         },
       },
     });
-    Sortable.create(document.getElementById('dataTable'));
+    Sortable.create(document.getElementById('dataTable'), {
+      onUpdate: (e) => {
+        const labels = [];
+        const data = [];
+        const backgroundColor = [];
+        const borderColor = [];
+
+        this.state.labels.forEach((label, i) => {
+          if (i !== e.oldIndex) {
+            if (i === e.newIndex) {
+              labels.push(this.state.labels[e.oldIndex]);
+              data.push(this.state.data[e.oldIndex]);
+              backgroundColor.push(this.state.backgroundColor[e.oldIndex]);
+              borderColor.push(this.state.borderColor[e.oldIndex]);
+            }
+            labels.push(this.state.labels[i]);
+            data.push(this.state.data[i]);
+            backgroundColor.push(this.state.backgroundColor[i]);
+            borderColor.push(this.state.borderColor[i]);
+          }
+        });
+
+        this.chart.data.labels = labels;
+        this.chart.data.datasets.forEach(dataset => {
+          dataset.data = data;
+          dataset.backgroundColor = backgroundColor;
+          dataset.borderColor = borderColor;
+        });
+        this.chart.update();
+
+        this.setState({
+          labels,
+          data,
+          backgroundColor,
+          borderColor,
+        });
+      },
+    });
     const data = JSON.parse(localStorage.getItem('data'));
     if (localStorage && data) {
       this.setState({
@@ -192,6 +237,18 @@ class Bar extends Component {
   handleAddDataDialogClose = () => {
     this.setState({
       addDataDialogOpen: false,
+    });
+  }
+
+  handleShowHelpClick = () => {
+    this.setState({
+      showHelpDialog: true,
+    });
+  }
+
+  handleHelpDialogClose = () => {
+    this.setState({
+      showHelpDialog: false,
     });
   }
 
@@ -332,6 +389,7 @@ class Bar extends Component {
           handleClose={this.handleAddDataDialogClose}
           handleAdd={this.handleDataAdd}
         />
+        <HelpDialog open={this.state.showHelpDialog} type="bar" onClose={this.handleHelpDialogClose} />
         {this.state.editData && <AddDataDialog
           open={true}
           handleClose={this.handleEditDataDialogClose}
@@ -404,16 +462,18 @@ class Bar extends Component {
                   </TableHead>
                   <TableBody id="dataTable">
                     {this.state.labels.map((label, index) => (
-                      <TableRow key={index} style={{ backgroundColor: this.state.backgroundColor[index] }}>
+                      <TableRow key={Math.random()} className={classes.draggableRow} style={{ backgroundColor: this.state.backgroundColor[index] }}>
                         <TableCell padding="dense">{label}</TableCell>
                         <TableCell padding="dense">{this.state.data[index]}</TableCell>
                         <TableCell padding="none">
-                          <IconButton onClick={this.handleDataEditClick(index)} aria-label="Delete">
-                            <CreateIcon className={classes.tableIcon} />
-                          </IconButton>
-                          <IconButton onClick={this.handleDataDelete(index)} aria-label="Delete">
-                            <DeleteIcon className={classes.tableIcon} />
-                          </IconButton>
+                          <Toolbar className={classes.noPadding}>
+                            <IconButton onClick={this.handleDataEditClick(index)} aria-label="Delete">
+                              <CreateIcon className={classes.tableIcon} />
+                            </IconButton>
+                            <IconButton onClick={this.handleDataDelete(index)} aria-label="Delete">
+                              <DeleteIcon className={classes.tableIcon} />
+                            </IconButton>
+                          </Toolbar>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -434,7 +494,7 @@ class Bar extends Component {
             </Button>
           </Toolbar>
         </Grid>
-        <Button variant="fab" color="secondary" aria-label="help" className={classes.helpButton}>
+        <Button style={{ display: this.state.showHelpDialog ? 'none' : 'block' }} variant="fab" color="secondary" aria-label="help" onClick={this.handleShowHelpClick} className={classes.helpButton}>
           <HelpIcon />
         </Button>
       </Grid>
