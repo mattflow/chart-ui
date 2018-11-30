@@ -121,16 +121,24 @@ class Bar extends Component {
 
         this.state.labels.forEach((label, i) => {
           if (i !== e.oldIndex) {
+            if (e.newIndex > e.oldIndex) {
+              labels.push(this.state.labels[i]);
+              data.push(this.state.data[i]);
+              backgroundColor.push(this.state.backgroundColor[i]);
+              borderColor.push(this.state.borderColor[i]);
+            }
             if (i === e.newIndex) {
               labels.push(this.state.labels[e.oldIndex]);
               data.push(this.state.data[e.oldIndex]);
               backgroundColor.push(this.state.backgroundColor[e.oldIndex]);
               borderColor.push(this.state.borderColor[e.oldIndex]);
             }
-            labels.push(this.state.labels[i]);
-            data.push(this.state.data[i]);
-            backgroundColor.push(this.state.backgroundColor[i]);
-            borderColor.push(this.state.borderColor[i]);
+            if (e.newIndex < e.oldIndex) {
+              labels.push(this.state.labels[i]);
+              data.push(this.state.data[i]);
+              backgroundColor.push(this.state.backgroundColor[i]);
+              borderColor.push(this.state.borderColor[i]);
+            }
           }
         });
 
