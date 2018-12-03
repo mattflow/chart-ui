@@ -387,13 +387,9 @@ class Bar extends Component {
   }
 
   handleFeedbackDialogOpen = () => {
-    if (localStorage.getItem('dontAsk') !== 'true') {
-      this.setState({
-        showFeedbackDialog: true,
-      });
-    } else {
-      this.handleChartDownload();
-    }
+    this.setState({
+      showFeedbackDialog: true,
+    });
   }
 
   render() {
